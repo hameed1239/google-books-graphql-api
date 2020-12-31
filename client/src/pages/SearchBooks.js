@@ -5,31 +5,25 @@ import Auth from '../utils/auth';
 import { searchGoogleBooks } from '../utils/API';
 import { saveBookIds, getSavedBookIds } from '../utils/localStorage';
 import { SAVE_BOOK } from "../utils/mutations";
-import { useMutation, useQuery } from '@apollo/react-hooks';
-import { GET_ME } from '../utils/queries';
+import { useMutation } from '@apollo/react-hooks';
 
 const SearchBooks = () => {
-  const { loading, error, data } = useQuery(GET_ME);
-  if (!loading) {
-    console.log(data)
-    console.log(error)
-  }
+  
   // create state for holding returned google api data
   const [searchedBooks, setSearchedBooks] = useState([]);
   // create state for holding our search field data
   const [searchInput, setSearchInput] = useState('');
-
   // create state to hold saved bookId values
   const [savedBookIds, setSavedBookIds] = useState(getSavedBookIds());
-
+  
   // set up useEffect hook to save `savedBookIds` list to localStorage on component unmount
   // learn more here: https://reactjs.org/docs/hooks-effect.html#effects-with-cleanup
   useEffect(() => {
-    return () => saveBookIds(savedBookIds);
-  });
-
-  // use the useMutation hook to initiate the SAVE_BOOK mutation
-  const [saveBook] = useMutation(SAVE_BOOK);
+      return () => saveBookIds(savedBookIds);
+    },[savedBookIds]);
+    
+    // use the useMutation hook to initiate the SAVE_BOOK mutation
+    const [saveBook] = useMutation(SAVE_BOOK);
   // create method to search for books and set state on form submit
   const handleFormSubmit = async (event) => {
     event.preventDefault();
@@ -73,16 +67,13 @@ const SearchBooks = () => {
     if (!token) {
       return false;
     }
-
     try {
       // add book to database
       await saveBook({
         variables: bookToSave 
       });
-
       // if book successfully saves to user's account, save book id to state
       setSavedBookIds([...savedBookIds, bookToSave.BookInput.bookId]);
-      console.log(bookToSave.BookInput.bookId);
     } catch (err) {
       console.error(err);
     }
