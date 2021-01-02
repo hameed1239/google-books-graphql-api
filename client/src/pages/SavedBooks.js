@@ -19,7 +19,6 @@ const SavedBooks = () => {
   
   const [removeBook] = useMutation(REMOVE_BOOK, {
     update(cache, { data: {removeBook} }) {
-      console.log(removeBook.savedBooks);
       const { me } = cache.readQuery({ query: GET_ME });
       cache.writeQuery({
         query: GET_ME,
@@ -29,10 +28,10 @@ const SavedBooks = () => {
   }
   );
   useEffect(() => {
-    // if (!loading) {
+    if (!loading) {
       setUserData(user);
-    // }
-  }, [user]);
+    }
+  });
   if (!Auth.loggedIn()) {
     return <Redirect to="/" />;
   }
@@ -43,7 +42,6 @@ const SavedBooks = () => {
   // create function that accepts the book's mongo _id value as param and deletes the book from the database
   const handleDeleteBook = async (bookId) => {
     const token = Auth.loggedIn() ? Auth.getToken() : null;
-    console.log(bookId)
     if (!token) {
       return false;
     }
