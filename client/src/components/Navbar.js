@@ -1,15 +1,30 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Navbar, Nav, Container, Modal, Tab } from 'react-bootstrap';
 import SignUpForm from './SignupForm';
 import LoginForm from './LoginForm';
+// import { loggedIn } from "../utils/auth"
 
 import Auth from '../utils/auth';
 
 const AppNavbar = () => {
   // set modal display state
   const [showModal, setShowModal] = useState(false);
+  // const [isTokenValid, setIsTokenValid] = useState(Auth.loggedIn())
+  // const [isLoggedIn, setIsLoggedIn] = useState(false)
 
+  // let isLoggedIn = Auth.loggedIn();
+  // useEffect(() => {
+  //   if (isTokenValid) {
+  //     setIsLoggedIn(true);
+  //   }
+  //   else {
+  //     setIsLoggedIn(false)
+  //   }
+  //   console.log(isLoggedIn);
+  //   // console.log(isTokenValid);
+  // },[isTokenValid])
+  // setInterval(function () { isLoggedIn = Auth.loggedIn(); console.log(isLoggedIn) }, 25000);
   return (
     <>
       <Navbar bg='dark' variant='dark' expand='lg'>
